@@ -10,14 +10,16 @@ const noInput = ref<HTMLDivElement | null>();
 const content = ref<HTMLDivElement | null>(null);
 const bodyWidth = ref<number>(0)
 const bodyHeight = ref<number>(0)
+const noClickCount = ref<number>(0)
 const safeMargin = 50
 
 
 function moveInput(event: Event) {
+  event.stopPropagation();
   if (noInput.value) {
+    noClickCount.value++
     const randomXCoordination = preventCoordinatesOverflow(generateRandomCoordinates(Axis.x), Axis.x)
     const randomYCoordination = preventCoordinatesOverflow(generateRandomCoordinates(Axis.y), Axis.y)
-    console.log(`x: ${randomXCoordination}, y: ${randomYCoordination}`)
     noInput.value.style.transform = `translate(${randomXCoordination}px, ${randomYCoordination}px)`
   }
 }
@@ -67,8 +69,8 @@ onMounted(() => {
       <label class="text-5xl" for="yes">Yes</label>
     </div>
     <div ref="noInput" @click="moveInput">
-      <input id="no" name="valentine" type="radio">
-      <label for="no">No</label>
+      <input name="valentine" type="radio" @click.prevent="() => {}">
+      <label for="">No</label>
     </div>
 
     <!--  <button @click="">Submit</button>-->
