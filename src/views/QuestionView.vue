@@ -8,6 +8,7 @@ enum Axis {
 
 const noInput = ref<HTMLDivElement | null>();
 const content = ref<HTMLDivElement | null>(null);
+const container = ref<HTMLDivElement | null>(null)
 const bodyWidth = ref<number>(0)
 const bodyHeight = ref<number>(0)
 const noClickCount = ref<number>(0)
@@ -67,25 +68,30 @@ function preventCoordinatesOverflow(coordinates: number, axis: Axis): number {
 }
 
 onMounted(() => {
-  if (content.value) {
+  if (content.value && container.value) {
     const client = content.value.getBoundingClientRect()
-    bodyHeight.value = client.height - safeMargin
-    bodyWidth.value = client.width - safeMargin
+    const _container = container.value.getBoundingClientRect()
+    bodyHeight.value = client.height - _container.height
+    console.log(bodyHeight.value)
+    bodyWidth.value = client.width
   }
 
 })
 </script>
 
 <template>
-  <div ref="content" class="h-full">
-    <h1>Do you want to be my valentine?</h1>
-    <img :src="currentImage" alt="A cat holding a rose" class="max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
+  <div ref="content" class="h-full overflow-hidden">
+    <div ref="container">
+      <h1>Do you want to be my valentine?</h1>
+      <img :src="currentImage" alt="A cat holding a rose"
+           class="max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
 
-    <div>
-      <input id="yes" class="scale-150" name="valentine" type="radio">
-      <label class="text-5xl" for="yes">Yes</label>
+      <div>
+        <input id="yes" name="valentine" type="radio">
+        <label for="yes">Yes</label>
+      </div>
     </div>
-    <div ref="noInput" class="transition-all" @click="handleInputClick">
+    <div ref="noInput" class="transition-all flex" @click="handleInputClick">
       <input name="valentine" type="radio" @click.prevent="() => {}">
       <label for="">No</label>
     </div>
