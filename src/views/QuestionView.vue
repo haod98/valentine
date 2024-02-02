@@ -12,20 +12,35 @@ const container = ref<HTMLDivElement | null>(null)
 const bodyWidth = ref<number>(0)
 const bodyHeight = ref<number>(0)
 const noClickCount = ref<number>(0)
+const yesScale = ref(100);
+const yesText = ref(1);
 const safeMargin = 50
 const currentImage = ref('/assets/cat-giving-rose.jpeg')
 const lastRandomIndex = ref(0);
 const totalImages = 10
 
-function handleInputClick(event: Event) {
+function handleNoInputClick(event: Event) {
   event.stopPropagation();
   if (noInput.value) {
     noClickCount.value++
     chooseRandomImage()
+    increaseYesScale()
     const randomXCoordination = preventCoordinatesOverflow(generateRandomCoordinates(Axis.x), Axis.x)
     const randomYCoordination = preventCoordinatesOverflow(generateRandomCoordinates(Axis.y), Axis.y)
     noInput.value.style.transform = `translate(${randomXCoordination}px, ${randomYCoordination}px)`
   }
+}
+
+function increaseYesScale() {
+  if (yesScale.value === 200) {
+    return
+  }
+  yesScale.value += 10
+
+  if (yesText.value === 6) {
+    return;
+  }
+  yesText.value += 0.5
 }
 
 function chooseRandomImage() {
@@ -72,7 +87,6 @@ onMounted(() => {
     const client = content.value.getBoundingClientRect()
     const _container = container.value.getBoundingClientRect()
     bodyHeight.value = client.height - _container.height
-    console.log(bodyHeight.value)
     bodyWidth.value = client.width
   }
 
@@ -86,12 +100,13 @@ onMounted(() => {
       <img :src="currentImage" alt="A cat holding a rose"
            class="max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
 
-      <div>
-        <input id="yes" name="valentine" type="radio">
-        <label for="yes">Yes</label>
+      <div class="flex">
+        <input id="yes" :class="`scale-[${yesScale}%]`" name="valentine" type="radio">
+        <label :class="`text-[${yesText}rem]`" for="yes">Yes</label>
+
       </div>
     </div>
-    <div ref="noInput" class="transition-all flex" @click="handleInputClick">
+    <div ref="noInput" class="transition-all flex" @click="handleNoInputClick">
       <input name="valentine" type="radio" @click.prevent="() => {}">
       <label for="">No</label>
     </div>

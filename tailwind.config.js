@@ -5,5 +5,29 @@ export default {
         extend: {},
     },
     plugins: [],
+    safelist: [
+        'scale-[110%]',
+        'scale-[120%]',
+        'scale-[130%]',
+        'scale-[140%]',
+        'scale-[150%]',
+        'scale-[160%]',
+        'scale-[170%]',
+        'scale-[180%]',
+        'scale-[190%]',
+        'scale-[200%]',
+        'text-[1rem]',
+        'text-[1.5rem]',
+        'text-[2rem]',
+        'text-[2.5rem]',
+        'text-[3rem]',
+        'text-[3.5rem]',
+        'text-[4rem]',
+        'text-[4.5rem]',
+        'text-[5rem]',
+        'text-[5.5rem]',
+        'text-[6rem]',
+    ]
+
 }
 
