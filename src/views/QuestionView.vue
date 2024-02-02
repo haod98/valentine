@@ -12,17 +12,34 @@ const bodyWidth = ref<number>(0)
 const bodyHeight = ref<number>(0)
 const noClickCount = ref<number>(0)
 const safeMargin = 50
+const currentImage = ref('/assets/cat-giving-rose.jpeg')
+const lastRandomIndex = ref(0);
+const totalImages = 10
 
-
-function moveInput(event: Event) {
+function handleInputClick(event: Event) {
   event.stopPropagation();
   if (noInput.value) {
     noClickCount.value++
+    chooseRandomImage()
     const randomXCoordination = preventCoordinatesOverflow(generateRandomCoordinates(Axis.x), Axis.x)
     const randomYCoordination = preventCoordinatesOverflow(generateRandomCoordinates(Axis.y), Axis.y)
     noInput.value.style.transform = `translate(${randomXCoordination}px, ${randomYCoordination}px)`
   }
 }
+
+function chooseRandomImage() {
+  let currentRandomIndex = generateRandomImageNumber(totalImages)
+  while (currentRandomIndex === lastRandomIndex.value) {
+    currentRandomIndex = generateRandomImageNumber(totalImages)
+  }
+  lastRandomIndex.value = currentRandomIndex
+  currentImage.value = `/assets/${currentRandomIndex}.jpeg`
+}
+
+function generateRandomImageNumber(length: number) {
+  return Math.floor(Math.random() * length)
+}
+
 
 function randomMultiplier(axis: Axis): number {
   if (axis === Axis.x) {
@@ -62,13 +79,13 @@ onMounted(() => {
 <template>
   <div ref="content" class="h-full">
     <h1>Do you want to be my valentine?</h1>
-    <img alt="A cat holding a rose" src="../assets/images/cat-giving-rose.jpeg">
+    <img :src="currentImage" alt="A cat holding a rose" class="max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
 
     <div>
       <input id="yes" class="scale-150" name="valentine" type="radio">
       <label class="text-5xl" for="yes">Yes</label>
     </div>
-    <div ref="noInput" @click="moveInput">
+    <div ref="noInput" class="transition-all" @click="handleInputClick">
       <input name="valentine" type="radio" @click.prevent="() => {}">
       <label for="">No</label>
     </div>
