@@ -16,7 +16,7 @@ const bodyWidth = ref<number>(0)
 const bodyHeight = ref<number>(0)
 const noClickCount = ref<number>(0)
 const yesText = ref(1);
-const currentImage = ref('/assets/cat-giving-rose.jpeg')
+const currentImage = ref(`${import.meta.env.BASE_URL}/assets/cat-giving-rose.jpeg`)
 const lastRandomIndex = ref(0);
 const totalImages = 10
 const boundingClientButton = ref<DOMRect>()
@@ -54,7 +54,7 @@ function chooseRandomImage() {
     currentRandomIndex = generateRandomImageNumber(totalImages)
   }
   lastRandomIndex.value = currentRandomIndex
-  currentImage.value = `/assets/${currentRandomIndex}.jpeg`
+  currentImage.value = `${import.meta.env.BASE_URL}/assets/${currentRandomIndex}.jpeg`
 }
 
 function generateRandomImageNumber(length: number) {
