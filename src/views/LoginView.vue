@@ -11,12 +11,12 @@ const passwordIsWrong = ref<boolean>(false)
 const correctPassword = '100523'
 const router = useRouter()
 const showCorrect = ref(false)
-const image = ref('/assets/home/1.jpeg');
+const image = ref('valentine/assets/home/1.jpeg');
 
 function submit() {
   if (correctPassword !== typedPassword.value) {
     passwordIsWrong.value = true
-    image.value = '/assets/home/crying.jpeg'
+    image.value = 'valentine/assets/home/crying.jpeg'
     return
   }
   passwordIsWrong.value = false
