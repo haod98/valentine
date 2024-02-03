@@ -9,7 +9,7 @@ function handleClick() {
 </script>
 
 <template>
-  <button class=" p-2.5 rounded-md bg-[#fb8ba2] text-white uppercase font-semibold"
+  <button :class="$attrs" :style="$attrs" class=" p-2.5 rounded-md bg-[#fb8ba2] text-white uppercase font-semibold"
           @click="handleClick">
     <slot></slot>
   </button>

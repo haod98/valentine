@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import {onMounted, ref} from "vue";
+import PrimaryButton from "@/components/PrimaryButton.vue";
+import HeadingComponent from "@/components/HeadingComponent.vue";
 
 enum Axis {
   "x",
@@ -12,7 +14,6 @@ const container = ref<HTMLDivElement | null>(null)
 const bodyWidth = ref<number>(0)
 const bodyHeight = ref<number>(0)
 const noClickCount = ref<number>(0)
-const yesScale = ref(100);
 const yesText = ref(1);
 const safeMargin = 80
 const currentImage = ref('/assets/cat-giving-rose.jpeg')
@@ -32,15 +33,11 @@ function handleNoInputClick(event: Event) {
 }
 
 function increaseYesScale() {
-  if (yesScale.value === 200) {
-    return
-  }
-  yesScale.value += 10
-
-  if (yesText.value === 6) {
+  console.log(yesText.value)
+  if (yesText.value === 2) {
     return;
   }
-  yesText.value += 0.5
+  yesText.value = parseFloat((yesText.value + 0.1).toFixed(1))
 }
 
 function chooseRandomImage() {
@@ -94,19 +91,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="content" class="h-full overflow-hidden">
+  <div ref="content" class="h-full overflow-hidden pt-10">
     <div>
       <div ref="container">
         <div class="flex-col flex items-center">
-          <h1>Do you want to be my valentine?</h1>
+          <HeadingComponent class="text-2xl">Do you want to be my valentine?</HeadingComponent>
           <img :src="currentImage" alt="A cat holding a rose"
                class="max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
         </div>
       </div>
-      <div>
-        <button :class="`text-[${yesText}rem]`">Yes</button>
+      <div class="">
+        <PrimaryButton :style="`font-size:${yesText}rem`" class="px-6">Yes</PrimaryButton>
         <div ref="noInput" class="transition-all flex" @click="handleNoInputClick">
-          <button>No</button>
+          <PrimaryButton class="px-6">No</PrimaryButton>
         </div>
       </div>
     </div>
