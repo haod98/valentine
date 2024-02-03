@@ -2,7 +2,14 @@
 export default {
     content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                'secondary': ['new-zen', 'ui-sans-serif', 'system-ui']
+            }
+        },
+        fontFamily: {
+            'sans': ['p22-underground', 'ui-sans-serif', 'system-ui'],
+        }
     },
     plugins: [],
     safelist: [
