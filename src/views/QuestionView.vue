@@ -20,6 +20,7 @@ const lastRandomIndex = ref(0);
 const totalImages = 10
 const boundingClientButton = ref<DOMRect>()
 const noButtonSize = ref<number>(0)
+const noButtonScale = ref<number>(1);
 const maxRightCoordinates = ref<number>(0)
 const maxLeftCoordinates = ref<number>(0)
 
@@ -38,10 +39,12 @@ function handleNoInputClick(event: Event) {
 }
 
 function increaseYesButtonSize() {
-  if (yesText.value === 2) {
-    return;
+  if (yesText.value < 2) {
+    yesText.value = parseFloat((yesText.value + 0.1).toFixed(1))
   }
-  yesText.value = parseFloat((yesText.value + 0.1).toFixed(1))
+  if (noButtonScale.value > 0) {
+    noButtonScale.value -= 0.03;
+  }
 }
 
 function chooseRandomImage() {
@@ -68,10 +71,6 @@ function generateRandomCoordinate(axis: Axis): number {
       randomNumber = Math.floor(randomNumber);
       return randomNumber
     }
-
-// Generate a random number within the specified range
-
-// Convert to integer if needed
   } else {
     multiplier = bodyHeight.value;
     return Math.floor(Math.random() * multiplier) + 1
@@ -101,7 +100,7 @@ onMounted(() => {
   if (content.value && container.value && htmlNoButtonContainer.value) {
     const client = content.value.getBoundingClientRect()
     const _container = container.value.getBoundingClientRect()
-    bodyHeight.value = client.height - _container.height
+    bodyHeight.value = client.height - _container.height - 40
     bodyWidth.value = client.width
     boundingClientButton.value = htmlNoButtonContainer.value.getBoundingClientRect()
     noButtonSize.value = boundingClientButton.value.width
@@ -113,9 +112,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="content" class="h-full overflow-hidden pt-10">
+  <div ref="content" class="h-full overflow-hidden">
     <div>
-      <div ref="container" class="my-3">
+      <div ref="container" class="mt-3 mb-8">
         <div class="flex-col flex items-center gap-2">
           <HeadingComponent class="text-2xl">Do you want to be my valentine?</HeadingComponent>
           <img :src="currentImage" alt="A cat holding a rose"
@@ -123,9 +122,9 @@ onMounted(() => {
         </div>
       </div>
       <div class="flex justify-center">
-        <PrimaryButton :style="`font-size:${yesText}rem`" class="px-6">Yes</PrimaryButton>
+        <PrimaryButton :style="`scale:${yesText}`" class="px-6 mr-5">Yes</PrimaryButton>
         <div ref="htmlNoButtonContainer" class="transition-all flex" @click="handleNoInputClick">
-          <PrimaryButton class="px-6">No</PrimaryButton>
+          <PrimaryButton :style="`scale:${noButtonScale}`" class="px-6">No</PrimaryButton>
         </div>
       </div>
     </div>
