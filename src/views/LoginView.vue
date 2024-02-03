@@ -5,16 +5,18 @@ import {useRouter} from "vue-router";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import HeadingComponent from "@/components/HeadingComponent.vue";
 
-const typedPassword = ref<string>("100523")
+const typedPassword = ref<string>("")
 const passwordIsWrong = ref<boolean>(false)
 // Don't look at the source code for the password >:(
 const correctPassword = '100523'
 const router = useRouter()
 const showCorrect = ref(false)
+const image = ref('/assets/home/1.jpeg');
 
 function submit() {
   if (correctPassword !== typedPassword.value) {
     passwordIsWrong.value = true
+    image.value = '/assets/home/crying.jpeg'
     return
   }
   passwordIsWrong.value = false
@@ -30,8 +32,8 @@ function submit() {
 <template>
   <div v-if="!showCorrect" class="pt-10">
     <div class="flex justify-center flex-col items-center">
-      <img alt="" class="mb-3 max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]"
-           src="/assets/home/1.jpeg">
+      <img :src="image" alt=""
+           class="mb-3 max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
     </div>
     <!-- TODO: Add more error messages -->
     <div class="flex flex-col items-center">
@@ -52,5 +54,4 @@ function submit() {
     </div>
     <HeadingComponent class="text-2xl">You may pass</HeadingComponent>
   </div>
-  <p>{{ typedPassword }}</p>
 </template>

@@ -2,6 +2,7 @@
 import {onMounted, ref} from "vue";
 import PrimaryButton from "@/components/PrimaryButton.vue";
 import HeadingComponent from "@/components/HeadingComponent.vue";
+import router from "@/router";
 
 enum Axis {
   "x",
@@ -100,7 +101,7 @@ onMounted(() => {
   if (content.value && container.value && htmlNoButtonContainer.value) {
     const client = content.value.getBoundingClientRect()
     const _container = container.value.getBoundingClientRect()
-    bodyHeight.value = client.height - _container.height - 40
+    bodyHeight.value = client.height - _container.height - 70
     bodyWidth.value = client.width
     boundingClientButton.value = htmlNoButtonContainer.value.getBoundingClientRect()
     noButtonSize.value = boundingClientButton.value.width
@@ -118,11 +119,14 @@ onMounted(() => {
         <div class="flex-col flex items-center gap-2">
           <HeadingComponent class="text-2xl">Do you want to be my valentine?</HeadingComponent>
           <img :src="currentImage" alt="A cat holding a rose"
-               class="max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
+               class="max-w-[200px] max-h-[200px] min-w-[200px] min-h-[200px]">
         </div>
       </div>
       <div class="flex justify-center">
-        <PrimaryButton :style="`scale:${yesText}`" class="px-6 mr-5">Yes</PrimaryButton>
+        <PrimaryButton :style="`scale:${yesText}`" class="px-6 mr-5"
+                       @emit-click="() => router.push({name: 'success', query: {tries: noClickCount}})">
+          Yes
+        </PrimaryButton>
         <div ref="htmlNoButtonContainer" class="transition-all flex" @click="handleNoInputClick">
           <PrimaryButton :style="`scale:${noButtonScale}`" class="px-6">No</PrimaryButton>
         </div>
