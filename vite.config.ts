@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    base: "'/<REPO>/'",
+    base: "https://haod98.github.io/valentine",
     plugins: [
         vue(),
     ],
