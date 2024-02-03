@@ -11,12 +11,14 @@ const passwordIsWrong = ref<boolean>(false)
 const correctPassword = '100523'
 const router = useRouter()
 const showCorrect = ref(false)
-const image = ref('/assets/home/1.jpeg');
+const image = ref(`${import.meta.env.BASE_URL}/assets/home/1.jpeg`);
+
+console.log(`${import.meta.env.BASE_URL}${image.value}`)
 
 function submit() {
   if (correctPassword !== typedPassword.value) {
     passwordIsWrong.value = true
-    image.value = '/assets/home/crying.jpeg'
+    image.value = `${import.meta.env.BASE_URL}/assets/home/crying.jpeg`
     return
   }
   passwordIsWrong.value = false
@@ -32,7 +34,7 @@ function submit() {
 <template>
   <div v-if="!showCorrect" class="pt-10">
     <div class="flex justify-center flex-col items-center">
-      <img :src="`${import.meta.env.BASE_URL}${image}`" alt=""
+      <img :src="image" alt=""
            class="mb-3 max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
     </div>
     <!-- TODO: Add more error messages -->
