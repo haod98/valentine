@@ -85,6 +85,7 @@ onMounted(() => {
     const _container = container.value.getBoundingClientRect()
     bodyHeight.value = client.height - _container.height - safeMargin
     bodyWidth.value = client.width
+    console.log(noInput.value?.getBoundingClientRect());
   }
 
 })
@@ -93,14 +94,14 @@ onMounted(() => {
 <template>
   <div ref="content" class="h-full overflow-hidden pt-10">
     <div>
-      <div ref="container">
-        <div class="flex-col flex items-center">
+      <div ref="container" class="my-3">
+        <div class="flex-col flex items-center gap-2">
           <HeadingComponent class="text-2xl">Do you want to be my valentine?</HeadingComponent>
           <img :src="currentImage" alt="A cat holding a rose"
                class="max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
         </div>
       </div>
-      <div class="">
+      <div class="flex justify-center gap-4">
         <PrimaryButton :style="`font-size:${yesText}rem`" class="px-6">Yes</PrimaryButton>
         <div ref="noInput" class="transition-all flex" @click="handleNoInputClick">
           <PrimaryButton class="px-6">No</PrimaryButton>
