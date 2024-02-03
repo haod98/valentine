@@ -76,6 +76,7 @@ function generateRandomCoordinate(axis: Axis): number {
     multiplier = bodyHeight.value;
     return Math.floor(Math.random() * multiplier) + 1
   }
+  return 0
 }
 
 
