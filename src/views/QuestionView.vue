@@ -8,32 +8,36 @@ enum Axis {
   "y"
 }
 
-const noInput = ref<HTMLDivElement | null>();
+const htmlNoButtonContainer = ref<HTMLDivElement | null>();
 const content = ref<HTMLDivElement | null>(null);
 const container = ref<HTMLDivElement | null>(null)
 const bodyWidth = ref<number>(0)
 const bodyHeight = ref<number>(0)
 const noClickCount = ref<number>(0)
 const yesText = ref(1);
-const safeMargin = 80
 const currentImage = ref('/assets/cat-giving-rose.jpeg')
 const lastRandomIndex = ref(0);
 const totalImages = 10
+const boundingClientButton = ref<DOMRect>()
+const noButtonSize = ref<number>(0)
+const maxRightCoordinates = ref<number>(0)
+const maxLeftCoordinates = ref<number>(0)
 
 function handleNoInputClick(event: Event) {
   event.stopPropagation();
-  if (noInput.value) {
+  if (htmlNoButtonContainer.value) {
     noClickCount.value++
     chooseRandomImage()
-    increaseYesScale()
-    const randomXCoordination = preventCoordinatesOverflow(generateRandomCoordinates(Axis.x), Axis.x)
-    const randomYCoordination = preventCoordinatesOverflow(generateRandomCoordinates(Axis.y), Axis.y)
-    noInput.value.style.transform = `translate(${randomXCoordination}px, ${randomYCoordination}px)`
+    increaseYesButtonSize()
+    const xCoordinates = generateRandomCoordinate(Axis.x);
+    const yCoordinates = generateRandomCoordinate(Axis.y);
+    const randomXCoordination = preventCoordinatesOverflow(xCoordinates, Axis.x)
+    const randomYCoordination = preventCoordinatesOverflow(yCoordinates, Axis.y)
+    htmlNoButtonContainer.value.style.transform = `translate(${randomXCoordination}px, ${randomYCoordination}px)`
   }
 }
 
-function increaseYesScale() {
-  console.log(yesText.value)
+function increaseYesButtonSize() {
   if (yesText.value === 2) {
     return;
   }
@@ -54,21 +58,34 @@ function generateRandomImageNumber(length: number) {
 }
 
 
-function randomMultiplier(axis: Axis): number {
+function generateRandomCoordinate(axis: Axis): number {
+  let multiplier;
   if (axis === Axis.x) {
-    return Math.floor(Math.random() * bodyWidth.value);
+    if (boundingClientButton.value) {
+      let min = maxLeftCoordinates.value
+      let max = maxRightCoordinates.value
+      let randomNumber = Math.random() * (max - min) + min;
+      randomNumber = Math.floor(randomNumber);
+      return randomNumber
+    }
+
+// Generate a random number within the specified range
+
+// Convert to integer if needed
+  } else {
+    multiplier = bodyHeight.value;
+    return Math.floor(Math.random() * multiplier) + 1
   }
-  return Math.floor(Math.random() * bodyHeight.value);
 }
 
-function generateRandomCoordinates(axis: Axis) {
-  return Math.floor(Math.random() * randomMultiplier(axis)) + 1
-}
 
 function preventCoordinatesOverflow(coordinates: number, axis: Axis): number {
   if (axis === Axis.x) {
-    if (coordinates > bodyWidth.value) {
-      return bodyWidth.value
+    if (coordinates > maxRightCoordinates.value) {
+      return maxRightCoordinates.value
+    }
+    if (maxLeftCoordinates.value > coordinates) {
+      return maxLeftCoordinates.value
     }
     return coordinates
   }
@@ -79,13 +96,17 @@ function preventCoordinatesOverflow(coordinates: number, axis: Axis): number {
   return coordinates
 }
 
+
 onMounted(() => {
-  if (content.value && container.value) {
+  if (content.value && container.value && htmlNoButtonContainer.value) {
     const client = content.value.getBoundingClientRect()
     const _container = container.value.getBoundingClientRect()
-    bodyHeight.value = client.height - _container.height - safeMargin
+    bodyHeight.value = client.height - _container.height
     bodyWidth.value = client.width
-    console.log(noInput.value?.getBoundingClientRect());
+    boundingClientButton.value = htmlNoButtonContainer.value.getBoundingClientRect()
+    noButtonSize.value = boundingClientButton.value.width
+    maxRightCoordinates.value = bodyWidth.value - boundingClientButton.value.right
+    maxLeftCoordinates.value = boundingClientButton.value.left - bodyWidth.value
   }
 
 })
@@ -101,9 +122,9 @@ onMounted(() => {
                class="max-w-[150px] max-h-[150px] min-w-[150px] min-h-[150px]">
         </div>
       </div>
-      <div class="flex justify-center gap-4">
+      <div class="flex justify-center">
         <PrimaryButton :style="`font-size:${yesText}rem`" class="px-6">Yes</PrimaryButton>
-        <div ref="noInput" class="transition-all flex" @click="handleNoInputClick">
+        <div ref="htmlNoButtonContainer" class="transition-all flex" @click="handleNoInputClick">
           <PrimaryButton class="px-6">No</PrimaryButton>
         </div>
       </div>
