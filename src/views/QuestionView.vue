@@ -116,7 +116,7 @@ onMounted(() => {
 <template>
   <div ref="content" class="h-full overflow-hidden">
     <div>
-      <div ref="container" class="mt-3 mb-8">
+      <div ref="container" class="mb-8">
         <div class="flex-col flex items-center gap-2">
           <HeadingComponent class="text-2xl">Do you want to be my valentine?</HeadingComponent>
           <img :src="currentImage" alt="A cat holding a rose"
