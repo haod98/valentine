@@ -118,7 +118,7 @@ onMounted(() => {
     <div>
       <div ref="container" class="mb-8">
         <div class="flex-col flex items-center gap-2">
-          <HeadingComponent class="text-2xl">Do you want to be my valentine?</HeadingComponent>
+          <HeadingComponent class="text-2xl">Will you be my valentine?</HeadingComponent>
           <img :src="currentImage" alt="A cat holding a rose"
                class="max-w-[200px] max-h-[200px] min-w-[200px] min-h-[200px]">
         </div>
